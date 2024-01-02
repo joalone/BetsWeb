@@ -8,7 +8,7 @@ import domain.User;
 import domain.Event;
 import exceptions.EventFinished;
 import exceptions.QuestionAlreadyExist;
-import exceptions.UserAlreadyExists;
+import exceptions.UserAlreadyExist;
 
 /**
  * Interface that specifies the business logic.
@@ -50,7 +50,7 @@ public interface BLFacade  {
 	 * It is invoked only when the option "initialize" is declared in the tag dataBaseOpenMode of resources/config.xml file
 	 */	
 	
-	User createUser(String name, String password) throws UserAlreadyExists;
+	User createUser(String name, String password) throws UserAlreadyExist;
 	boolean checkPassword(String username, String password);
 	
 	public void initializeBD();

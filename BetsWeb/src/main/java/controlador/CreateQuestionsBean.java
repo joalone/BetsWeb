@@ -3,6 +3,9 @@ package controlador;
 import java.util.Date;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+
 import domain.Event;
 import domain.Question;
 import exceptions.EventFinished;
@@ -27,10 +30,10 @@ public class CreateQuestionsBean {
 		this.minBet = .0f;	
 	}
 	
-	public Date getfecha() {
+	public Date getFecha() {
 		return fecha;
 	}
-	public void setfecha(Date fecha) {
+	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 		this.eventos = this.facade.getEvents(this.fecha);
 	}
@@ -50,8 +53,12 @@ public class CreateQuestionsBean {
 		System.out.println("Seleccionado evento "+evento.toString());
 		this.evento = evento;
 	}
-	
-	public void setnombreQuestion(String nombreQuestion) {
+
+	public String getNombreQuestion() {
+		return nombreQuestion;
+	}
+
+	public void setNombreQuestion(String nombreQuestion) {
 		this.nombreQuestion = nombreQuestion;
 	}
 
@@ -67,13 +74,22 @@ public class CreateQuestionsBean {
 		this.eventos = facade.getEvents(fecha);
 	}
 
-	public void createQuestion() throws EventFinished, QuestionAlreadyExist {
+	public void createQuestion() {
 		if(evento == null) {
-			
+			System.out.println("Error, el evento no ha sido seleccionado.");
 		} else if (nombreQuestion == null || nombreQuestion.isBlank()) {
-			
+			System.out.println("Error, el nombre de la pregunta está vacío.");
 		} else {
-			facade.createQuestion(evento, nombreQuestion, minBet);
+			try {
+				facade.createQuestion(this.evento, this.nombreQuestion, this.minBet);
+			} catch (EventFinished e) {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage("Error: el evento ya terminó."));
+			} catch (QuestionAlreadyExist e) {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage("Error: la pregunta ya existe."));
+			}
 		}
 	}
+	
 }

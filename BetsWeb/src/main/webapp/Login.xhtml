@@ -14,25 +14,24 @@
 			<table>
 				<tr>
 					<td>Nombre:</td>
-					<td><h:inputText id="nombre" value="#{login.nombre}">
+					<td><h:inputText id="nombre" value="#{login.nombre}" required="true">
 						<f:validateLength minimum="3" maximum="20"/>
 						<f:validateRegex pattern="([a-z]|[A-Z])([a-z]|[A-Z]|[0-9])*$"/>
-						<f:ajax execute="nombre" render="mensajes"/>
 					</h:inputText></td>
 				</tr>
 				<tr>
 					<td>Contraseña:</td>
-					<td><h:inputSecret id="pass" value="#{login.password}">
-						
+					<td><h:inputSecret id="pass" value="#{login.password}" required="true">
+						<f:validateLength minimum="8" maximum="64"/>
 					</h:inputSecret></td>
-				</tr>
-				<tr>
-					<td><h:messages id="mensajes" style="color:blue" /></td>
 				</tr>
 			</table>
 			<p>
+				<h:messages id="mensajes" style="color:blue" />
+			</p>
+			<p>
 				<h:commandButton value="Aceptar" action="#{login.comprobar}" />
-				<h:commandButton value="Registrarse" action="#{login.registrarse}" />
+				<h:commandButton value="Registrarse" action="#{login.registrar}" />
 			</p>
 		</h:form>
 	</h:body>

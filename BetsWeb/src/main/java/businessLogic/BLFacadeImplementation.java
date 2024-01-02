@@ -11,7 +11,7 @@ import domain.User;
 import domain.Event;
 import exceptions.EventFinished;
 import exceptions.QuestionAlreadyExist;
-import exceptions.UserAlreadyExists;
+import exceptions.UserAlreadyExist;
 
 /**
  * It implements the business logic as a web service.
@@ -86,7 +86,7 @@ public class BLFacadeImplementation implements BLFacade {
 	}
 
 	@Override
-	public User createUser(String name, String password) throws UserAlreadyExists {
+	public User createUser(String name, String password) throws UserAlreadyExist {
 		// TODO Auto-generated method stub
 		return this.dbManager.createUser(name,password);
 	}

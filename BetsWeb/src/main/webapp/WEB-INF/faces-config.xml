@@ -11,11 +11,6 @@
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 	<managed-bean>
-		<managed-bean-name>register</managed-bean-name>
-		<managed-bean-class>controlador.RegisterBean</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-	</managed-bean>
-	<managed-bean>
 		<managed-bean-name>queryQuestions</managed-bean-name>
 		<managed-bean-class>controlador.QueryQuestionsBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
@@ -44,14 +39,6 @@
 		<navigation-case>
 			<from-outcome>error</from-outcome>
 			<to-view-id>/LoginFail.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-	<navigation-rule>
-		<display-name>Login.xhtml</display-name>
-		<from-view-id>/Login.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>register</from-outcome>
-			<to-view-id>/Register.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>

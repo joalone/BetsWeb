@@ -7,7 +7,7 @@ import domain.Event;
 import domain.Question;
 import domain.User;
 import exceptions.QuestionAlreadyExist;
-import exceptions.UserAlreadyExists;
+import exceptions.UserAlreadyExist;
 
 public interface DataAccessInterface {
 
@@ -60,9 +60,9 @@ public interface DataAccessInterface {
 	 */
 	boolean existQuestion(Event event, String question);
 
-
-	User createUser(String name, String password) throws UserAlreadyExists;
-
+	User createUser(String name, String password) throws UserAlreadyExist;
+	
+	boolean existUser(User u);
 
 	boolean checkPassword(String username, String password);
 

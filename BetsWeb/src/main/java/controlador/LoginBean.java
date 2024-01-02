@@ -1,7 +1,10 @@
 package controlador;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+
 import businessLogic.BLFacadeImplementation;
-import exceptions.UserAlreadyExists;
+import exceptions.UserAlreadyExist;
 
 public class LoginBean {
 	private BLFacadeImplementation facade;
@@ -11,10 +14,10 @@ public class LoginBean {
 	public LoginBean() {
 		this.facade = new BLFacadeImplementation();
 		try {
-			this.facade.createUser("christian", "badajoz");
-			this.facade.createUser("jon", "onekin");
-			this.facade.createUser("admin", "admin");
-		} catch (UserAlreadyExists e) {
+			this.facade.createUser("christian", "badajoz7");
+			this.facade.createUser("jon", "onekin42");
+			this.facade.createUser("admin", "adminadmin");
+		} catch (UserAlreadyExist e) {
 			System.out.println("Error con la base de datos.");
 		}
 	}
@@ -37,9 +40,18 @@ public class LoginBean {
 
 	public String comprobar() {
 		if (this.facade.checkPassword(this.nombre, this.password)) {
-			return "error";
-		} else {
 			return "ok";
+		} else {
+			return "error";
+		}
+	}
+	
+	public void registrar() {
+		try {
+			this.facade.createUser(this.nombre, this.password);
+		} catch (UserAlreadyExist e) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage("Error: el usuario ya existe."));
 		}
 	}
 }

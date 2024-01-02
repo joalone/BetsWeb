@@ -27,7 +27,7 @@ import domain.Event;
 import domain.Question;
 import domain.User;
 import exceptions.QuestionAlreadyExist;
-import exceptions.UserAlreadyExists;
+import exceptions.UserAlreadyExist;
 
 /**
  * It implements the data access to the objectDb database
@@ -176,36 +176,24 @@ public class HibernateDataAccess implements DataAccessInterface {
 	public Question createQuestion(Event event, String question, float betMinimum) throws QuestionAlreadyExist {
 		System.out.println(">> DataAccess: createQuestion=> event= " + event + " question= " + question + " betMinimum="
 				+ betMinimum);
+		if (this.existQuestion(event, question))
+			throw new QuestionAlreadyExist();
+		Question q = new Question(question, betMinimum, event);
+
 		Session session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
-
-		if (event.DoesQuestionExists(question))
-			throw new QuestionAlreadyExist(ResourceBundle.getBundle("Etiquetas").getString("ErrorQueryAlreadyExist"));
-
-		List<Event> result = session.createQuery("from event where eventNumber= :1")
-				.setParameter("1", event.getEventNumber()).list();
-		Question q = new Question();
-
-		try {
-			q.setEvent((Event) result.get(0));
-		} catch (Exception ex) {
-			System.out.println("Error al crear instancia de Question: no existe evento" + ex.toString());
-		}
-
-		// session.save(q) not required when CascadeType.PERSIST is added in questions
-		// property of Event class
-		// @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
-		session.save(event);
+		session.save(q);
 		session.getTransaction().commit();
 		return q;
 	}
 
 	public boolean existQuestion(Event event, String question) {
 		System.out.println(">> DataAccess: existQuestion=> event= " + event + " question= " + question);
+		
 		Session session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
-		List<Event> result = session.createQuery("from event where eventNumber= :1")
-				.setParameter("1", event.getEventNumber()).list();
+		List<Event> result = session.createQuery("from Event as e where e.eventNumber= :eNum")
+				.setParameter("eNum", event.getEventNumber()).list();
 		if (result.get(0) != null) {
 			Event ev = result.get(0);
 			return ev.DoesQuestionExists(question);
@@ -226,10 +214,8 @@ public class HibernateDataAccess implements DataAccessInterface {
 
 		Session session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
-		System.out.println("he llegado");
 		List<Event> events = session.createQuery("from Event as e where e.eventDate = :date").setParameter("date", date)
 				.list();
-		System.out.println("he llegado");
 		session.getTransaction().commit();
 
 		for (Event ev : events) {
@@ -274,21 +260,28 @@ public class HibernateDataAccess implements DataAccessInterface {
 	}
 
 	@Override
-	public User createUser(String username, String password) throws UserAlreadyExists {
+	public User createUser(String username, String password) throws UserAlreadyExist {
 		System.out.println(">> DataAccess: createUser=> username= " + username);
+		
+		User u = new User(username, password);
+		if (this.existUser(u))
+			throw new UserAlreadyExist();
+		
 		Session session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
-
-		List<User> result = session.createQuery("from User as u where u.username= :uname").setParameter("uname", username).list();
-
-		if (result.get(0) != null) {
-			throw new UserAlreadyExists();
-		}
-
-		User u = new User(username, password);
 		session.save(u);
 		session.getTransaction().commit();
 		return u;
+	}
+
+	public boolean existUser(User u) {
+		System.out.println(">> DataAccess: existUser=> user= " + u);
+		
+		Session session = sessionFactory.getCurrentSession();
+		session.beginTransaction();
+		List<Event> result = session.createQuery("from User as u where u.username= :uname")
+				.setParameter("uname", u.getUsername()).list();
+		return result.size() != 0;
 	}
 
 	@Override
@@ -297,10 +290,11 @@ public class HibernateDataAccess implements DataAccessInterface {
 		Session session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
 
-		List<User> result = session.createQuery("from User as u where u.username= :uname").setParameter("uname", username).list();
+		List<User> result = session.createQuery("from User as u where u.username= :uname")
+				.setParameter("uname", username).list();
 		session.getTransaction().commit();
 
-		if (result.get(0) != null) {
+		if (result.size() != 0) {
 			User u = result.get(0);
 			return u.checkPassword(password);
 		} else {

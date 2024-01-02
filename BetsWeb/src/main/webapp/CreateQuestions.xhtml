@@ -16,30 +16,32 @@
 			<div class="section">
 				<h2>Event Date</h2>
 				<p:calendar id="fecha" value="#{createQuestions.fecha}"
-					navigator="true" mode="popup">
+					navigator="true" mode="popup" required="true">
 					<f:ajax event="dateSelect" update="listaEventos"
 						render="mensajes listaEventos" />
 				</p:calendar>
 			</div>
 			<div class="section">
-				<h2>List of events</h2>
-				<h:selectOneMenu id="listaEventos" value="#{createQuestions.evento}"
-					converter="omnifaces.SelectItemsConverter">
-					<f:selectItems value="#{createQuestions.eventos}" />
-				</h:selectOneMenu>
-			</div>
-			<div class="section">
 				<h2>Question</h2>
-				<h:inputText id="question" >
+				<h:inputText id="question" value="#{createQuestions.nombreQuestion}" required="true">
 				</h:inputText>
 			</div>
 			<div class="section">
 				<h2>MinBet</h2>
-				<h:inputText id="minBet" value="#{createQuestions.minBet}">
+				<h:inputText id="minBet" value="#{createQuestions.minBet}" required="true">
+					<f:validateDoubleRange minimum="0" />
 				</h:inputText>
 			</div>
+			<div class="section">
+				<h2>List of events</h2>
+				<h:selectOneMenu id="listaEventos" value="#{createQuestions.evento}"
+					converter="omnifaces.SelectItemsConverter" required="true">
+					<f:selectItems value="#{createQuestions.eventos}" />
+				</h:selectOneMenu>
+			</div>
+			
 			<h:messages id="mensajes" style="color:blue" />
-			<h:commandButton value="Crear" />
+			<h:commandButton value="Aceptar" action="#{createQuestions.createQuestion}" />
 		</h:form>
 	</h:body>
 </f:view>
