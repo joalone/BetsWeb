@@ -27,12 +27,17 @@ public class User {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+	
+	public void setPaassowrd(String password) {
+		this.password = password;
+	}
 
 	public boolean checkPassword(String s) {
 		return s.equals(this.password);
 	}
 	
 	private String hash(String s) {
+		// TODO Method stub
 		return s;
 	}
 	

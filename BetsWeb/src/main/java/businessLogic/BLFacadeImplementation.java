@@ -87,13 +87,11 @@ public class BLFacadeImplementation implements BLFacade {
 
 	@Override
 	public User createUser(String name, String password) throws UserAlreadyExist {
-		// TODO Auto-generated method stub
 		return this.dbManager.createUser(name,password);
 	}
 
 	@Override
 	public boolean checkPassword(String username, String password) {
-		// TODO Auto-generated method stub
 		return this.dbManager.checkPassword(username, password);
 	}
 
