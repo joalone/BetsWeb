@@ -115,8 +115,6 @@ public class Event {
 		if (getClass() != obj.getClass())
 			return false;
 		Event other = (Event) obj;
-		if (eventNumber != other.eventNumber)
-			return false;
-		return true;
+		return eventNumber != other.eventNumber;
 	}
 }

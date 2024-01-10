@@ -158,7 +158,8 @@ public class HibernateDataAccess implements DataAccessInterface {
 			session.getTransaction().commit();
 			System.out.println("Db initialized");
 		} catch (Exception e) {
-			e.printStackTrace();
+			// e.printStackTrace();
+			System.out.println("Error al crear la base de datos.");
 		}
 	}
 
@@ -281,7 +282,7 @@ public class HibernateDataAccess implements DataAccessInterface {
 		session.beginTransaction();
 		List<Event> result = session.createQuery("from User as u where u.username= :uname")
 				.setParameter("uname", u.getUsername()).list();
-		return result.size() != 0;
+		return !result.isEmpty();
 	}
 
 	@Override
@@ -294,7 +295,7 @@ public class HibernateDataAccess implements DataAccessInterface {
 				.setParameter("uname", username).list();
 		session.getTransaction().commit();
 
-		if (result.size() != 0) {
+		if (!result.isEmpty()) {
 			User u = result.get(0);
 			return u.checkPassword(password);
 		} else {

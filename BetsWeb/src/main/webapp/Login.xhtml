@@ -11,21 +11,21 @@
 	<h:body>
 		<h:form>
 			<h3>Por favor, introduce tu nombre y tu contraseña</h3>
-			<table>
-				<tr>
-					<td>Nombre:</td>
-					<td><h:inputText id="nombre" value="#{login.nombre}" required="true">
+			<div>
+				<p>
+					Nombre:
+					<h:inputText id="nombre" value="#{login.nombre}" required="true">
 						<f:validateLength minimum="3" maximum="20"/>
 						<f:validateRegex pattern="([a-z]|[A-Z])([a-z]|[A-Z]|[0-9])*$"/>
-					</h:inputText></td>
-				</tr>
-				<tr>
-					<td>Contraseña:</td>
-					<td><h:inputSecret id="pass" value="#{login.password}" required="true">
+					</h:inputText>
+				</p>
+				<p>
+					Contraseña:
+					<h:inputSecret id="pass" value="#{login.password}" required="true">
 						<f:validateLength minimum="8" maximum="64"/>
-					</h:inputSecret></td>
-				</tr>
-			</table>
+					</h:inputSecret>
+				</p>
+			</div>
 			<p>
 				<h:messages id="mensajes" style="color:blue" />
 			</p>

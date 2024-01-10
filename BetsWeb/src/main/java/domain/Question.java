@@ -1,7 +1,5 @@
 package domain;
 
-import java.io.*;
-
 import javax.persistence.*;
 
 @Entity
